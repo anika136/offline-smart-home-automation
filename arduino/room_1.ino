@@ -5,7 +5,7 @@
 SoftwareSerial btSerial(2, 3);  // RX, TX
 
 // Define servos
-Servo door, window;
+Servo door, window, dispenser;
 
 //// Store current angle
 //int door = -1; 
@@ -13,6 +13,7 @@ Servo door, window;
 
 int light=4;
 int fan=5;
+int light2=8;
 
 // Track last command
 String lastCommand = "";
@@ -24,11 +25,15 @@ void setup() {
 
  pinMode(light,OUTPUT);
   pinMode(fan,OUTPUT);
+ pinMode(light2,OUTPUT);
 
   door.attach(6);
   door.write(10); 
   window.attach(7);
-  window.write(0); 
+  window.write(0);
+  dispenser.attach(9);
+  dispenser.write(7);
+   
 }
 
 void loop() {
@@ -46,6 +51,10 @@ void loop() {
        digitalWrite(light,HIGH);
        } else if (command == "light off" || command == "light of" ) {
        digitalWrite(light,LOW);
+       }else if (command == "light to on" ) {
+       digitalWrite(light2,HIGH);
+       }else if (command == "light to off" || command == "light to of" ) {
+       digitalWrite(light2,LOW);
        }else if (command == "fan on" ) {
        digitalWrite(fan,HIGH);
        }else if (command == "fan of" || command == "fan off" ) {
@@ -58,6 +67,10 @@ void loop() {
        window.write(180);       
        }else if (command == "window close" ) {
        window.write(0); 
+       }else if (command == "dispenser open" ) {
+       dispenser.write(100);       
+       }else if (command == "dispenser close" ) {
+       dispenser.write(7); 
        }else {
        Serial.println("Unknown command.");
        stateChanged = false;
